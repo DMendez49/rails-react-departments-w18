@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import ItemCard from "./ItemCard";
 import { Link, } from "react-router-dom";
 import { Card, Icon, Button, Image, } from "semantic-ui-react";
 
@@ -23,27 +24,22 @@ class Department extends React.Component {
 
   renderItems = () => {
     return this.state.items.map( i => (
-      <Card>
-        <Image src={i.image_url} />
-        <Card.Content>
-          <Card.Header>{ i.name }</Card.Header>
-          <br />
-          <Card.Content extra>${ i.price }</Card.Content>
-          <br />
-          <Card.Description>{ i.description }</Card.Description>
-        </Card.Content>
-        <Card.Content extra>
-          <div className="ui two buttons">
-            <Button inverted color="blue">
-              Edit
-            </Button>
-            <Button inverted color="red">
-              Delete
-            </Button>
-          </div>
-        </Card.Content>
-      </Card>
+      <ItemCard key={i.id} { ...i } remove={this.removeItem} />
     ))
+  }
+
+  removeItem = (id) => {
+    const remove = window.confirm("Are you sure you want to delete this item?");
+    const dId = this.props.match.params.id;
+    if (remove)
+      axios.delete(`/api/departments/${dId}/items/${id}`)
+        .then( res => {
+          const items = this.state.items.filter( i => {
+            if (i.id !== id)
+              return i;
+          })
+          this.setState({ items, });
+        })
   }
 
   render() {
@@ -76,7 +72,7 @@ class Department extends React.Component {
         </Link>
         <br />
         <br />
-        <Card.Group>
+        <Card.Group itemsPerRow={4}>
           { this.renderItems() }
         </Card.Group>
       </div>
