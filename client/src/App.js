@@ -4,6 +4,8 @@ import Home from "./components/Home";
 import NoMatch from "./components/NoMatch";
 import Navbar from "./components/Navbar";
 import Departments from "./components/Departments";
+import Department from "./components/Department";
+import DepartmentForm from "./components/DepartmentForm";
 import { Container, } from "semantic-ui-react";
 
 const App = () => (
@@ -13,6 +15,8 @@ const App = () => (
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/departments" component={Departments} />
+        <Route exact path="/departments/new" component={DepartmentForm} />
+        <Route exact path="/departments/:id" component={Department} />
         <Route component={NoMatch} />
       </Switch>
     </Container>
