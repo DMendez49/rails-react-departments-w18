@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { Card, Image, Grid, } from "semantic-ui-react";
+import { Card, Image, Grid, Segment, Rating, } from "semantic-ui-react";
 
 class Item extends React.Component {
   state = { item: {}, reviews: [], };
@@ -10,6 +10,25 @@ class Item extends React.Component {
     const { url, } = this.props.match;
     axios.get(`/api/${url}`)
       .then( res => this.setState({ item: res.data, }))
+    axios.get(`/api/items/${this.props.match.params.itemId}/reviews`)
+      .then( res => this.setState({ reviews: res.data, }))
+  }
+
+  renderReviews = () => {
+    return this.state.reviews.map( r => (
+      <Card fluid>
+        <Card.Content>
+          <Rating defaultRating={r.rating} maxRating={5} disabled icon="star" size="massive"/>
+          <br />
+          <br />
+          <Card.Header>{ r.title }</Card.Header>
+          <Card.Meta>{ r.author }</Card.Meta>
+          <Card.Description>
+            { r.body }
+          </Card.Description>
+        </Card.Content>
+      </Card>
+    ))
   }
 
   render() {
@@ -31,9 +50,11 @@ class Item extends React.Component {
             </Card>
           </Grid.Column>
           <Grid.Column>
-            <div>
-              <h1>Reviews</h1>
-            </div>
+            <Segment>
+              <h1 style={{ textAlign: "center" }}>Reviews</h1>
+              <hr />
+              { this.renderReviews() }
+            </Segment>
           </Grid.Column>
         </Grid.Row>
       </Grid>

@@ -14,16 +14,16 @@ const ItemCard = ({ id, name, description, price, image_url, remove, department_
     </Card.Content>
     <Card.Content extra>
       <div className="ui three buttons">
-      <Link to={`/departments/${department_id}/items/${id}`}>
-        <Button inverted color="blue">
-          Show
-        </Button>
-      </Link>
-      <Link to={`/departments/${department_id}/items/${id}/edit`}>
-        <Button inverted color="orange">
-          Edit
-        </Button>
-      </Link>
+        <Link to={`/departments/${department_id}/items/${id}`}>
+          <Button inverted color="blue">
+            Show
+          </Button>
+        </Link>
+        <Link to={`/departments/${department_id}/items/${id}/edit`}>
+          <Button inverted color="orange">
+            Edit
+          </Button>
+        </Link>
         <Button inverted color="red" onClick={() => remove(id)}>
           Delete
         </Button>
