@@ -5,25 +5,53 @@ import { Form, } from "semantic-ui-react";
 class ItemForm extends React.Component {
   state = { name: "", description: "", price: "", image_url: "", };
 
+  componentDidMount() {
+    const { id, itemId } = this.props.match.params;
+    if (itemId)
+      axios.get(`/api/departments/${id}/items/${itemId}`)
+        .then( res => this.setState({ ...res.data, }))
+  }
+
   handleChange = (e) => {
     const { name, value, } = e.target;
     // [name] is allowing name to be used as a object key instead of a string
     this.setState({ [name]: value, });
+    // looooooooong way to do this code
+    // switch(name) {
+    //   case "name":
+    //     this.setState({ name: value, });
+    //   case "description":
+    //     this.setState({ description: value, });
+    //   case "price":
+    //     this.setState({ price: value, });
+    //   case "image_url":
+    //     this.setState({ image_url: value, });
+    // }
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { id, } = this.props.match.params;
-    axios.post(`/api/departments/${id}/items`, { ...this.state })
-      .then( res => this.props.history.push(`/departments/${id}`))
+    // const { id, itemId, } = this.props.match.params;
+    // const { push } = this.props.history;
+    // This is the two lines of code above but combined into one
+    const { match: { params: {id, itemId} }, history: { push, } } = this.props;
+
+    if (itemId) {
+      axios.put(`/api/departments/${id}/items/${itemId}`, {...this.state})
+        .then( res => push(`/departments/${id}`))
+    } else {
+      axios.post(`/api/departments/${id}/items`, { ...this.state })
+        .then( res => push(`/departments/${id}`))
+    }
   }
 
   render() {
     const { name, description, price, image_url, } = this.state;
+    const { id, itemId } = this.props.match.params;
 
     return (
       <div>
-        <h1>Add Item</h1>
+        <h1>{itemId ? "Edit Item" : "Add Item"}</h1>
         <Form onSubmit={this.handleSubmit}>
           <Form.Group widths="equal">
             <Form.Input 
