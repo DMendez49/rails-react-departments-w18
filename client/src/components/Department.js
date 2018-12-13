@@ -50,10 +50,12 @@ class Department extends React.Component {
         <div style={{ display: "flex", width: "100%", justifyContent: "space-between" }}>
           <h1>{ name }</h1>
           <div>
-            <Button icon color="blue">
-              <Icon name="pencil" />
-              Edit
-            </Button>
+            <Link to={`/departments/${id}/edit`}>
+              <Button icon color="blue">
+                <Icon name="pencil" />
+                Edit
+              </Button>
+            </Link>
             <Button icon color="red" onClick={() => this.handleDelete(id)}>
               <Icon name="trash" />
               Delete
