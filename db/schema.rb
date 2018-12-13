@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_12_190429) do
+ActiveRecord::Schema.define(version: 2018_12_13_182247) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,12 +26,24 @@ ActiveRecord::Schema.define(version: 2018_12_12_190429) do
     t.string "name", null: false
     t.string "description"
     t.float "price", default: 10.0
-    t.text "image_url", default: "https://robohash.org/quosnihilsed.png?size=300x300&set=set1"
+    t.text "image_url", default: "https://robohash.org/etiustoqui.png?size=300x300&set=set1"
     t.bigint "department_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["department_id"], name: "index_items_on_department_id"
   end
 
+  create_table "reviews", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "body"
+    t.string "author"
+    t.integer "rating", default: 3
+    t.bigint "item_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_reviews_on_item_id"
+  end
+
   add_foreign_key "items", "departments"
+  add_foreign_key "reviews", "items"
 end
