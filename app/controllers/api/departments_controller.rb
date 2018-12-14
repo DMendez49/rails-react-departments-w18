@@ -6,6 +6,7 @@ class Api::DepartmentsController < ApplicationController
   end
 
   def show
+    # d = Department.get_department_items(params[:id])
     render json: @department
   end
 
